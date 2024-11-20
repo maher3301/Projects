@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculatrice</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .calculator {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .display {
+    font-size: 24px;
+    text-align: right;
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    width: calc(100% - 20px);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .button {
+    font-size: 18px;
+    padding: 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.1s;
+  }
+
+  .button:hover {
+    background-color: #2980b9;
+    transform: translateY(2px);
+  }
+
+</style></head>
+<body>
+
+  <div class="calculator">
+    <h4 style="text-align: center;">Calculatrice</h4>
+    <input type="text" class="display" id="result" value="0" readonly>
+    <div class="buttons">
+      <button class="button" onclick="clearDisplay()">C</button>
+      <button class="button" onclick="appendToDisplay('7')">7</button>
+      <button class="button" onclick="appendToDisplay('8')">8</button>
+      <button class="button" onclick="appendToDisplay('9')">9</button>
+      <button class="button" onclick="appendToDisplay('4')">4</button>
+      <button class="button" onclick="appendToDisplay('5')">5</button>
+      <button class="button" onclick="appendToDisplay('6')">6</button>
+      <button class="button" onclick="appendToDisplay('1')">1</button>
+      <button class="button" onclick="appendToDisplay('2')">2</button>
+      <button class="button" onclick="appendToDisplay('3')">3</button>
+      <button class="button" onclick="appendToDisplay('0')">0</button>
+      <button class="button" onclick="appendToDisplay('.')">.</button>
+      <button class="button" onclick="calculate()">=</button>
+      <button class="button" onclick="appendToDisplay('+')">+</button>
+      <button class="button" onclick="appendToDisplay('-')">-</button>
+      <button class="button" onclick="appendToDisplay('*')">*</button>
+      <button class="button" onclick="appendToDisplay('/')">/</button>
+      <button class="button" onclick="appendOpenParenthesis()">(</button>
+      <button class="button" onclick="appendCloseParenthesis()">)</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('result');
+    let currentExpression = ''; // Garder une trace de l'expression actuelle
+    
+    function appendToDisplay(value) {
+      if (display.value === 'Erreur : Expression est incorrecte') {
+        display.value = '0';
+        currentExpression = '';
+      }
+    
+      if (display.value === '0' && value !== '.') {
+        display.value = value;
+      } else {
+        display.value += value;
+      }
+      currentExpression += value; 
+    }
+    
+    function clearDisplay() {
+      display.value = '0';
+      currentExpression = ''; 
+    }
+    
+    function calculate() {
+    try {
+        if (currentExpression.includes('/0')) {
+            throw new Error('Erreur : Division par zéro');
+        }
+        
+        display.value = eval(currentExpression); 
+        currentExpression = display.value; 
+    } catch (error) {
+        display.value = error.message; 
+        currentExpression = ''; 
+    }
+}
+
+    
+    // Fonction pour ajouter une parenthèse ouvrir "("
+    function appendOpenParenthesis() {
+      appendToDisplay('(');
+    }
+    
+    // Fonction pour ajouter une parenthèse fermante ")"
+    function appendCloseParenthesis() {
+      appendToDisplay(')');
+    } 
+  </script>
+  
+</body>
+</html>
